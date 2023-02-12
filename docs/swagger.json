@@ -1,0 +1,180 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Manages expense sharing",
+        "title": "Rent Cat",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/api/v1",
+    "paths": {
+        "/expense/:year/:month": {
+            "get": {
+                "description": "do ping",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "example"
+                ],
+                "summary": "ping example",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Expense"
+                        }
+                    }
+                }
+            }
+        },
+        "/expenses": {
+            "get": {
+                "description": "Get all expenses",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "expenses"
+                ],
+                "summary": "Get all expenses",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Expense"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/split": {
+            "post": {
+                "description": "adds expense split percentage",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "split"
+                ],
+                "summary": "adds expense split percentage",
+                "parameters": [
+                    {
+                        "description": "Split Descriptor",
+                        "name": "Split",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.SplitSpecifier"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Split"
+                        }
+                    }
+                }
+            }
+        },
+        "/split/:year/:month": {
+            "get": {
+                "description": "gets expense split percentage",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "split"
+                ],
+                "summary": "gets expense split percentage",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Split"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.Expense": {
+            "type": "object",
+            "properties": {
+                "combinedExpense": {
+                    "type": "number"
+                },
+                "herExpense": {
+                    "type": "number"
+                },
+                "month": {
+                    "type": "integer"
+                },
+                "myExpense": {
+                    "type": "number"
+                },
+                "year": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.Split": {
+            "type": "object",
+            "properties": {
+                "herPercentage": {
+                    "type": "number"
+                },
+                "month": {
+                    "type": "integer"
+                },
+                "myPercentage": {
+                    "type": "number"
+                },
+                "year": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.SplitSpecifier": {
+            "type": "object",
+            "properties": {
+                "herNetIncome": {
+                    "type": "number"
+                },
+                "herPercentage": {
+                    "type": "number"
+                },
+                "myNetIncome": {
+                    "type": "number"
+                },
+                "myPercentage": {
+                    "type": "number"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "BasicAuth": {
+            "type": "basic"
+        }
+    }
+}

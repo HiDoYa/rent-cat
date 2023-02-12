@@ -1,0 +1,117 @@
+basePath: /api/v1
+definitions:
+  models.Expense:
+    properties:
+      combinedExpense:
+        type: number
+      herExpense:
+        type: number
+      month:
+        type: integer
+      myExpense:
+        type: number
+      year:
+        type: integer
+    type: object
+  models.Split:
+    properties:
+      herPercentage:
+        type: number
+      month:
+        type: integer
+      myPercentage:
+        type: number
+      year:
+        type: integer
+    type: object
+  models.SplitSpecifier:
+    properties:
+      herNetIncome:
+        type: number
+      herPercentage:
+        type: number
+      myNetIncome:
+        type: number
+      myPercentage:
+        type: number
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: Manages expense sharing
+  title: Rent Cat
+  version: "1.0"
+paths:
+  /expense/:year/:month:
+    get:
+      consumes:
+      - application/json
+      description: do ping
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Expense'
+      summary: ping example
+      tags:
+      - example
+  /expenses:
+    get:
+      consumes:
+      - application/json
+      description: Get all expenses
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Expense'
+            type: array
+      summary: Get all expenses
+      tags:
+      - expenses
+  /split:
+    post:
+      consumes:
+      - application/json
+      description: adds expense split percentage
+      parameters:
+      - description: Split Descriptor
+        in: body
+        name: Split
+        required: true
+        schema:
+          $ref: '#/definitions/models.SplitSpecifier'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Split'
+      summary: adds expense split percentage
+      tags:
+      - split
+  /split/:year/:month:
+    get:
+      consumes:
+      - application/json
+      description: gets expense split percentage
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Split'
+      summary: gets expense split percentage
+      tags:
+      - split
+securityDefinitions:
+  BasicAuth:
+    type: basic
+swagger: "2.0"
