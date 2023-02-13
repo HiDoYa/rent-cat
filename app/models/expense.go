@@ -1,11 +1,17 @@
 package models
 
+import "time"
+
+// ExpenseType ...
+type ExpenseType struct {
+	TypeName string
+	CreatedAt time.Time
+}
+
 // Expense ...
 type Expense struct {
-	CombinedExpense float32
-	MyExpense float32
-	HerExpense float32
-
-	Year int
-	Month int
+	ExpenseID int
+	ExpenseType string
+	Amount float32
+	CreatedAt time.Time
 }

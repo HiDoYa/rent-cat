@@ -1,0 +1,3 @@
+DROP TABLE IF EXISTS split;
+DROP TABLE IF EXISTS expense;
+DROP TABLE IF EXISTS expense_type;

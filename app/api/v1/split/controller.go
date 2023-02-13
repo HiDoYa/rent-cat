@@ -28,17 +28,14 @@ func (cont Controller) GetSplit(c *gin.Context) {
 	yearStr := c.Param("year")
 	monthStr := c.Param("month")
 	
-	year, _ := strconv.Atoi(monthStr)
-	month, _ := strconv.Atoi(yearStr)
+	strconv.Atoi(monthStr)
+	strconv.Atoi(yearStr)
 
 	// TODO Get from database
 
 	split := models.Split{
 		MyPercentage: 0.88,
 		HerPercentage: 0.12,
-
-		Year: year,
-		Month: month,
 	}
 
 	c.JSON(http.StatusOK, gin.H{
@@ -81,14 +78,12 @@ func (cont Controller) PostSplit(c *gin.Context) {
 	}
 
 	currentTime := time.Now()
-	year := currentTime.Year()
-	month := int(currentTime.Month())
+	currentTime.Year()
+	currentTime.Month()
 
 	split := models.Split{
 		MyPercentage: myPercentage,
 		HerPercentage: herPercentage,
-		Year: year,
-		Month: month,
 	}
 
 	// TODO Store in database

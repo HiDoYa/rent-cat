@@ -27,11 +27,7 @@ func (cont Controller) GetExpenses(c *gin.Context) {
 	var expenses []models.Expense
 	for i := 0; i < 5; i++ {
 		expense := models.Expense{
-			CombinedExpense: 5.00+float32(i),
-			MyExpense: 3.00+float32(i/2),
-			HerExpense: 2.00+float32(i/2),
-			Year: 2022,
-			Month: i+2,
+			Amount: 0.5,
 		}
 
 		expenses = append(expenses, expense)
@@ -55,17 +51,13 @@ func (cont Controller) GetExpense(c *gin.Context) {
 	yearStr := c.Param("year")
 	monthStr := c.Param("month")
 
-	year, _ := strconv.Atoi(monthStr)
-	month, _ := strconv.Atoi(yearStr)
+	strconv.Atoi(monthStr)
+	strconv.Atoi(yearStr)
 
 	// TODO Get from database
 
 	expense := models.Expense{
-		CombinedExpense: 5.00,
-		MyExpense: 3.00,
-		HerExpense: 2.00,
-		Year: year,
-		Month: month,
+		Amount: 5.0,
 	}
 
 	c.JSON(http.StatusOK, gin.H{

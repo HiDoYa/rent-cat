@@ -13,4 +13,5 @@ postgres-dev:
 		-e POSTGRES_DB=rent-cat-db \
 		-e POSTGRES_USER=rent-cat-user \
 		-e POSTGRES_PASSWORD=rent-cat-pass \
+		-p 9945:5432 \
 		-d postgres

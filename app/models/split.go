@@ -1,13 +1,6 @@
 package models
 
-// Split ...
-type Split struct {
-	MyPercentage float32
-	HerPercentage float32
-
-	Year int
-	Month int
-}
+import "time"
 
 // SplitSpecifier ...
 type SplitSpecifier struct {
@@ -16,4 +9,12 @@ type SplitSpecifier struct {
 
 	MyNetIncome float32
 	HerNetIncome float32
+}
+
+// Split ...
+type Split struct {
+	SplitID int
+	MyPercentage float32
+	HerPercentage float32
+	CreatedAt time.Time
 }
