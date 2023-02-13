@@ -120,36 +120,33 @@
         "models.Expense": {
             "type": "object",
             "properties": {
-                "combinedExpense": {
+                "amount": {
                     "type": "number"
                 },
-                "herExpense": {
-                    "type": "number"
+                "createdAt": {
+                    "type": "string"
                 },
-                "month": {
+                "expenseID": {
                     "type": "integer"
                 },
-                "myExpense": {
-                    "type": "number"
-                },
-                "year": {
-                    "type": "integer"
+                "expenseType": {
+                    "type": "string"
                 }
             }
         },
         "models.Split": {
             "type": "object",
             "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
                 "herPercentage": {
                     "type": "number"
-                },
-                "month": {
-                    "type": "integer"
                 },
                 "myPercentage": {
                     "type": "number"
                 },
-                "year": {
+                "splitID": {
                     "type": "integer"
                 }
             }

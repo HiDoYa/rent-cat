@@ -8,11 +8,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Controller ...
-type Controller struct {
-}
+// Controller holds implementations of API endpoints
+type Controller struct {}
 
-// GetExpenses ...
+// GetExpenses returns all expenses
 // @Summary Get all expenses
 // @Schemes
 // @Description Get all expenses
@@ -38,11 +37,11 @@ func (cont Controller) GetExpenses(c *gin.Context) {
 	})
 }
 
-// GetExpense ...
-// @Summary ping example
+// GetExpense gets expenses for a certain month and year
+// @Summary gets expenses for a certain month and year
 // @Schemes
-// @Description do ping
-// @Tags example
+// @Description gets expenses for a certain month and year
+// @Tags expenses
 // @Accept json
 // @Produce json
 // @Success 200 {object} models.Expense

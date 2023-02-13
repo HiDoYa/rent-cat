@@ -2,13 +2,13 @@ package models
 
 import "time"
 
-// ExpenseType ...
+// ExpenseType represents an expense type
 type ExpenseType struct {
 	TypeName string
 	CreatedAt time.Time
 }
 
-// Expense ...
+// Expense represents a single expense
 type Expense struct {
 	ExpenseID int
 	ExpenseType string

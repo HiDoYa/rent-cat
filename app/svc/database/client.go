@@ -12,27 +12,28 @@ import (
 var client *Client
 
 
-// Client ...
+// Client holds a connection to the database
 type Client struct {
 	client *sql.DB
 }
 
 
-// MakeDb ...
+// MakeDb is a singleton that initializes a client object to database
 func MakeDb() (*Client, error) {
 	if client != nil {
 		return client, nil
 	}
 
+	// TODO Populate with prod credentials
 	host := "localhost"
 	port := "9945"
-	databaseName := "rent-cat-db"
+	database := "rent-cat-db"
 	username := "rent-cat-user"
 	password := "rent-cat-pass"
 
 	connStr := fmt.Sprintf(
 		"host=%s port=%s dbname=%s user=%s password=%s sslmode=disable", 
-		host, port, databaseName, username, password,
+		host, port, database, username, password,
 	)
 
 	db, err := sql.Open("postgres", connStr)

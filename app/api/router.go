@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Routes ...
+// Routes adds v1 api endpoints
 func Routes(router *gin.Engine) {
 	v1 := router.Group("/api/v1")
 	{

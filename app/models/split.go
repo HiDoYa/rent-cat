@@ -2,7 +2,7 @@ package models
 
 import "time"
 
-// SplitSpecifier ...
+// SplitSpecifier are the fields used to specify a new split
 type SplitSpecifier struct {
 	MyPercentage float32
 	HerPercentage float32
@@ -11,7 +11,7 @@ type SplitSpecifier struct {
 	HerNetIncome float32
 }
 
-// Split ...
+// Split represents the expense split between me/her
 type Split struct {
 	SplitID int
 	MyPercentage float32

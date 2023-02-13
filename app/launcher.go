@@ -1,6 +1,8 @@
 package app
 
 import (
+	"fmt"
+
 	"github.com/HiDoYa/rent-cat/app/api"
 	// Required to initialize swagger docs
 	_ "github.com/HiDoYa/rent-cat/docs"
@@ -9,7 +11,7 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
-// Launch ...
+// Launch starts API server
 func Launch() {
 	router := gin.Default()
 
@@ -26,6 +28,6 @@ func Launch() {
 	err := router.Run(address)
 
 	if err != nil {
+		fmt.Printf("Failed to launch router %v", err.Error())
 	}
-
 }

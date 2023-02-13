@@ -11,11 +11,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Controller ...
-type Controller struct {
-}
+// Controller holds implementations of API endpoints
+type Controller struct {}
 
-// GetSplit ...
+// GetSplit gets expense split percentage
 // @Summary gets expense split percentage
 // @Schemes
 // @Description gets expense split percentage
@@ -44,7 +43,7 @@ func (cont Controller) GetSplit(c *gin.Context) {
 }
 
 
-// PostSplit ...
+// PostSplit adds expense split percentage
 // @Summary adds expense split percentage
 // @Schemes
 // @Description adds expense split percentage

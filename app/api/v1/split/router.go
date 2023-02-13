@@ -1,22 +1,19 @@
 package split
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/HiDoYa/rent-cat/app/svc/router"
+	"github.com/gin-gonic/gin"
+)
 
-// Controllable ...
+// Controllable is an interface for implementations of API endpoints
 type Controllable interface {
 	GetSplit(c *gin.Context)
 	PostSplit(c * gin.Context)
 }
 
-
-// Router ...
-type Router interface {
-	GET(string, ...gin.HandlerFunc) gin.IRoutes
-	POST(string, ...gin.HandlerFunc) gin.IRoutes
-}
-
-// Routes ...
-func Routes(engine Router, controllable Controllable) {
+// Routes adds split api endpoints
+// Controller injection enables easier testing
+func Routes(engine router.Router, controllable Controllable) {
 	engine.GET("/split", controllable.GetSplit)
 	engine.POST("/split", controllable.PostSplit)
 }

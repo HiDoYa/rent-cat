@@ -2,26 +2,24 @@ basePath: /api/v1
 definitions:
   models.Expense:
     properties:
-      combinedExpense:
+      amount:
         type: number
-      herExpense:
-        type: number
-      month:
+      createdAt:
+        type: string
+      expenseID:
         type: integer
-      myExpense:
-        type: number
-      year:
-        type: integer
+      expenseType:
+        type: string
     type: object
   models.Split:
     properties:
+      createdAt:
+        type: string
       herPercentage:
         type: number
-      month:
-        type: integer
       myPercentage:
         type: number
-      year:
+      splitID:
         type: integer
     type: object
   models.SplitSpecifier:
