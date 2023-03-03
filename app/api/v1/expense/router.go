@@ -7,13 +7,14 @@ import (
 
 // Controllable is an interface for implementations of API endpoints
 type Controllable interface {
-	GetExpenses(c *gin.Context)
 	GetExpense(c *gin.Context)
+	GetExpenses(c *gin.Context)
 }
 
 // Routes adds expenses api endpoints
 // Controller injection enables easier testing
 func Routes(engine router.Router, controllable Controllable) {
-	engine.GET("/expenses", controllable.GetExpenses)
-	engine.GET("/expense/:year/:month", controllable.GetExpense)
+	// engine.GET("/expense-summary/:year/:month", controllable.GetExpenses)
+	engine.GET("/expense/:expense_type/:year/:month", controllable.GetExpenses)
+	engine.GET("/expenses/:year/:month", controllable.GetExpenses)
 }

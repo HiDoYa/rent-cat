@@ -44,17 +44,30 @@ paths:
     get:
       consumes:
       - application/json
-      description: do ping
+      description: gets expenses for a certain month and year
+      parameters:
+      - description: current year
+        in: path
+        name: year
+        required: true
+        type: string
+      - description: current month
+        in: path
+        name: month
+        required: true
+        type: string
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.Expense'
-      summary: ping example
+            items:
+              $ref: '#/definitions/models.Expense'
+            type: array
+      summary: gets expenses for a certain month and year
       tags:
-      - example
+      - expenses
   /expenses:
     get:
       consumes:
@@ -94,11 +107,11 @@ paths:
       summary: adds expense split percentage
       tags:
       - split
-  /split/:year/:month:
+  /split/latest:
     get:
       consumes:
       - application/json
-      description: gets expense split percentage
+      description: gets latest expense split percentage
       produces:
       - application/json
       responses:
@@ -106,7 +119,7 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/models.Split'
-      summary: gets expense split percentage
+      summary: gets latest expense split percentage
       tags:
       - split
 securityDefinitions:

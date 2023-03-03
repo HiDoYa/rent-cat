@@ -18,7 +18,7 @@ const docTemplate = `{
     "paths": {
         "/expense/:year/:month": {
             "get": {
-                "description": "do ping",
+                "description": "gets expenses for a certain month and year",
                 "consumes": [
                     "application/json"
                 ],
@@ -26,14 +26,33 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "example"
+                    "expenses"
                 ],
-                "summary": "ping example",
+                "summary": "gets expenses for a certain month and year",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "current year",
+                        "name": "year",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "current month",
+                        "name": "month",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Expense"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Expense"
+                            }
                         }
                     }
                 }
@@ -99,9 +118,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/split/:year/:month": {
+        "/split/latest": {
             "get": {
-                "description": "gets expense split percentage",
+                "description": "gets latest expense split percentage",
                 "consumes": [
                     "application/json"
                 ],
@@ -111,7 +130,7 @@ const docTemplate = `{
                 "tags": [
                     "split"
                 ],
-                "summary": "gets expense split percentage",
+                "summary": "gets latest expense split percentage",
                 "responses": {
                     "200": {
                         "description": "OK",

@@ -4,38 +4,12 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/HiDoYa/rent-cat/app/models"
+	"github.com/HiDoYa/rent-cat/app/svc/database"
 	"github.com/gin-gonic/gin"
 )
 
 // Controller holds implementations of API endpoints
 type Controller struct {}
-
-// GetExpenses returns all expenses
-// @Summary Get all expenses
-// @Schemes
-// @Description Get all expenses
-// @Tags expenses
-// @Accept json
-// @Produce json
-// @Success 200 {array} models.Expense
-// @Router /expenses [get]
-func (cont Controller) GetExpenses(c *gin.Context) {
-	// TODO Get from database
-
-	var expenses []models.Expense
-	for i := 0; i < 5; i++ {
-		expense := models.Expense{
-			Amount: 0.5,
-		}
-
-		expenses = append(expenses, expense)
-	}
-
-	c.JSON(http.StatusOK, gin.H{
-		"expenses": expenses,
-	})
-}
 
 // GetExpense gets expenses for a certain month and year
 // @Summary gets expenses for a certain month and year
@@ -44,22 +18,68 @@ func (cont Controller) GetExpenses(c *gin.Context) {
 // @Tags expenses
 // @Accept json
 // @Produce json
+// @Param expense_type path string true "expense type"
+// @Param year path string true "current year"
+// @Param month path string true "current month"
+// @Param
 // @Success 200 {object} models.Expense
-// @Router /expense/:year/:month [get]
+// @Router /expense/:expense_type/:year/:month [get]
 func (cont Controller) GetExpense(c *gin.Context) {
+	expenseType := c.Param("expenseType")
 	yearStr := c.Param("year")
 	monthStr := c.Param("month")
 
-	strconv.Atoi(monthStr)
-	strconv.Atoi(yearStr)
+	month, err := strconv.Atoi(monthStr)
+	if err != nil {
+	}
+	year, err := strconv.Atoi(yearStr)
+	if err != nil {
+	}
 
-	// TODO Get from database
+	client, err := database.MakeDb()
+	if err != nil {
+	}
 
-	expense := models.Expense{
-		Amount: 5.0,
+	expenses, err := client.SelectExpense(expenseType, month, year)
+	if err != nil {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"expense": expense,
+		"expenses": expenses,
+	})
+}
+
+// GetExpenses gets expenses for a certain month and year
+// @Summary gets expenses for a certain month and year
+// @Schemes
+// @Description gets expenses for a certain month and year
+// @Tags expenses
+// @Accept json
+// @Produce json
+// @Param year path string true "current year"
+// @Param month path string true "current month"
+// @Success 200 {array} models.Expense
+// @Router /expense/:year/:month [get]
+func (cont Controller) GetExpenses(c *gin.Context) {
+	yearStr := c.Param("year")
+	monthStr := c.Param("month")
+
+	month, err := strconv.Atoi(monthStr)
+	if err != nil {
+	}
+	year, err := strconv.Atoi(yearStr)
+	if err != nil {
+	}
+
+	client, err := database.MakeDb()
+	if err != nil {
+	}
+
+	expenses, err := client.SelectExpenses(month, year)
+	if err != nil {
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"expenses": expenses,
 	})
 }
