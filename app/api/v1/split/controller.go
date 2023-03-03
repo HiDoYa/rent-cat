@@ -4,37 +4,32 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
-	"strconv"
 	"time"
 
 	"github.com/HiDoYa/rent-cat/app/models"
+	"github.com/HiDoYa/rent-cat/app/svc/database"
 	"github.com/gin-gonic/gin"
 )
 
 // Controller holds implementations of API endpoints
 type Controller struct {}
 
-// GetSplit gets expense split percentage
-// @Summary gets expense split percentage
+// GetLatestSplit gets latest expense split percentage
+// @Summary gets latest expense split percentage
 // @Schemes
-// @Description gets expense split percentage
+// @Description gets latest expense split percentage
 // @Tags split
 // @Accept json
 // @Produce json
 // @Success 200 {object} models.Split
-// @Router /split/:year/:month [get]
-func (cont Controller) GetSplit(c *gin.Context) {
-	yearStr := c.Param("year")
-	monthStr := c.Param("month")
-	
-	strconv.Atoi(monthStr)
-	strconv.Atoi(yearStr)
+// @Router /split/latest [get]
+func (cont Controller) GetLatestSplit(c *gin.Context) {
+	client, err := database.MakeDb()
+	if err != nil {
+	}
 
-	// TODO Get from database
-
-	split := models.Split{
-		MyPercentage: 0.88,
-		HerPercentage: 0.12,
+	split, err := client.SelectLatestSplit()
+	if err != nil {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
@@ -63,8 +58,7 @@ func (cont Controller) PostSplit(c *gin.Context) {
 	if err != nil {
 	}
 
-	var myPercentage float32
-	var herPercentage float32
+	var myPercentage, herPercentage float32
 
 	if body.MyNetIncome != 0 && body.HerNetIncome != 0 {
 
@@ -85,7 +79,13 @@ func (cont Controller) PostSplit(c *gin.Context) {
 		HerPercentage: herPercentage,
 	}
 
-	// TODO Store in database
+	client, err := database.MakeDb()
+	if err != nil {
+	}
+
+	_, err = client.InsertSplit(split)
+	if err != nil {
+	}
 
 	c.JSON(http.StatusOK, gin.H{
 		"split": split,

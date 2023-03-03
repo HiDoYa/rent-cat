@@ -22,8 +22,8 @@ func (db *Client) InsertSplit(split models.Split) (int, error) {
 	return int(lastInsertID), err
 }
 
-// SelectSplit retrieves the currently active split
-func (db *Client) SelectSplit() (models.Split, error) {
+// SelectLatestSplit retrieves the currently active split
+func (db *Client) SelectLatestSplit() (models.Split, error) {
 	stmt := "SELECT split_id, my_percentage, her_percentage, created_at FROM split " +
 		"WHERE created_at = (SELECT MAX(created_at) FROM split)"
 
