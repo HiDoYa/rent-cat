@@ -62,7 +62,6 @@ func (db *Client) SelectExpenses(month int, year int) ([]models.Expense, error) 
 	rows, err := db.client.Query(stmt, month, year)
 
 	if err != nil {
-		fmt.Println(stmt)
 		return nil, fmt.Errorf("DB SelectExpenses error: %w", err)
 	}
 	defer rows.Close()
