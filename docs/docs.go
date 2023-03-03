@@ -16,7 +16,53 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/expense/:year/:month": {
+        "/expense/{expense_type}/{year}/{month}": {
+            "get": {
+                "description": "gets expenses for a certain month and year",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "expenses"
+                ],
+                "summary": "gets expenses for a certain month and year",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "expense type",
+                        "name": "expense_type",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "current year",
+                        "name": "year",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "current month",
+                        "name": "month",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Expense"
+                        }
+                    }
+                }
+            }
+        },
+        "/expenses/{year}/{month}": {
             "get": {
                 "description": "gets expenses for a certain month and year",
                 "consumes": [
@@ -45,32 +91,6 @@ const docTemplate = `{
                         "required": true
                     }
                 ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/models.Expense"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/expenses": {
-            "get": {
-                "description": "Get all expenses",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "expenses"
-                ],
-                "summary": "Get all expenses",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -156,6 +176,23 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "expenseType": {
+                    "$ref": "#/definitions/models.ExpenseType"
+                },
+                "status": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.ExpenseType": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "splitType": {
+                    "$ref": "#/definitions/models.SplitType"
+                },
+                "typeName": {
                     "type": "string"
                 }
             }
@@ -193,6 +230,21 @@ const docTemplate = `{
                     "type": "number"
                 }
             }
+        },
+        "models.SplitType": {
+            "type": "string",
+            "enum": [
+                "FiftyFifty",
+                "Default",
+                "MeOnly",
+                "HerOnly"
+            ],
+            "x-enum-varnames": [
+                "FiftyFiftySplit",
+                "DefaultSplit",
+                "MeOnlySplit",
+                "HerOnlySplit"
+            ]
         }
     },
     "securityDefinitions": {

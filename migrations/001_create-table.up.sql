@@ -5,9 +5,12 @@ CREATE TABLE IF NOT EXISTS split (
     created_at DATE DEFAULT CURRENT_DATE
 );
 
+CREATE TYPE split_type AS ENUM ('FiftyFifty', 'Default', 'MeOnly', 'HerOnly');
+
 CREATE TABLE IF NOT EXISTS expense_type (
     type_name VARCHAR(32) PRIMARY KEY,
     active BOOLEAN NOT NULL DEFAULT true,
+    split_type split_type NOT NULL DEFAULT 'Default',
     created_at DATE DEFAULT CURRENT_DATE
 );
 

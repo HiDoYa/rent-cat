@@ -21,9 +21,8 @@ type Controller struct {}
 // @Param expense_type path string true "expense type"
 // @Param year path string true "current year"
 // @Param month path string true "current month"
-// @Param
 // @Success 200 {object} models.Expense
-// @Router /expense/:expense_type/:year/:month [get]
+// @Router /expense/{expense_type}/{year}/{month} [get]
 func (cont Controller) GetExpense(c *gin.Context) {
 	expenseType := c.Param("expenseType")
 	yearStr := c.Param("year")
@@ -31,17 +30,25 @@ func (cont Controller) GetExpense(c *gin.Context) {
 
 	month, err := strconv.Atoi(monthStr)
 	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
 	}
 	year, err := strconv.Atoi(yearStr)
 	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
 	}
 
 	client, err := database.MakeDb()
 	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
 	}
 
 	expenses, err := client.SelectExpense(expenseType, month, year)
 	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
@@ -59,24 +66,32 @@ func (cont Controller) GetExpense(c *gin.Context) {
 // @Param year path string true "current year"
 // @Param month path string true "current month"
 // @Success 200 {array} models.Expense
-// @Router /expense/:year/:month [get]
+// @Router /expenses/{year}/{month} [get]
 func (cont Controller) GetExpenses(c *gin.Context) {
 	yearStr := c.Param("year")
 	monthStr := c.Param("month")
 
 	month, err := strconv.Atoi(monthStr)
 	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
 	}
 	year, err := strconv.Atoi(yearStr)
 	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
 	}
 
 	client, err := database.MakeDb()
 	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
 	}
 
 	expenses, err := client.SelectExpenses(month, year)
 	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{

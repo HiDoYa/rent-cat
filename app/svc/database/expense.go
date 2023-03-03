@@ -25,10 +25,13 @@ func (db *Client) InsertExpense(expense models.Expense) (int, error) {
 
 // SelectExpense retrieves a single expense from the specified month and year
 func (db *Client) SelectExpense(expenseType string, month int, year int) (models.Expense, error) {
-	stmt := "SELECT expense_id, expense_type, amount, created_at FROM expense " +
-		"WHERE EXTRACT('month' from created_at) = $1 " +
-		"AND EXTRACT('year' from created_at) = $2" + 
-		"AND expense_type = $3"
+	stmt := "SELECT e.expense_id, e.amount, e.created_at, " +
+		"et.type_name, et.split_type, et.created_at FROM expense AS E " +
+		"INNER JOIN expense_type AS et " +
+		"ON e.expense_type = et.type_name " +
+		"WHERE EXTRACT('month' from e.created_at) = $1 " +
+		"AND EXTRACT('year' from e.created_at) = $2 " + 
+		"AND e.expense_type = $3 "
 
 	rows, err := db.client.Query(stmt, month, year, expenseType)
 
@@ -38,7 +41,8 @@ func (db *Client) SelectExpense(expenseType string, month int, year int) (models
 	defer rows.Close()
 
 	var expense models.Expense
-	err = rows.Scan(&expense.ExpenseID, &expense.ExpenseType, &expense.Amount, &expense.CreatedAt)
+	err = rows.Scan(&expense.ExpenseID, &expense.Amount, &expense.CreatedAt, 
+		&expense.ExpenseType.TypeName, &expense.ExpenseType.SplitType, &expense.ExpenseType.CreatedAt)
 	if err != nil {
 		return models.Expense{}, fmt.Errorf("DB SelectExpense error: %w", err)
 	}
@@ -48,13 +52,17 @@ func (db *Client) SelectExpense(expenseType string, month int, year int) (models
 
 // SelectExpenses retrieves all expenses from the specified month and year
 func (db *Client) SelectExpenses(month int, year int) ([]models.Expense, error) {
-	stmt := "SELECT expense_id, expense_type, amount, created_at FROM expense " +
-		"WHERE EXTRACT('month' from created_at) = $1 " +
-		"AND EXTRACT('year' from created_at) = $2"
+	stmt := "SELECT e.expense_id, e.amount, e.created_at, " +
+		"et.type_name, et.split_type, et.created_at FROM expense AS e " +
+		"INNER JOIN expense_type AS et " +
+		"ON e.expense_type = et.type_name " +
+		"WHERE EXTRACT('month' from e.created_at) = $1 " +
+		"AND EXTRACT('year' from e.created_at) = $2 "
 
 	rows, err := db.client.Query(stmt, month, year)
 
 	if err != nil {
+		fmt.Println(stmt)
 		return nil, fmt.Errorf("DB SelectExpenses error: %w", err)
 	}
 	defer rows.Close()
@@ -62,7 +70,8 @@ func (db *Client) SelectExpenses(month int, year int) ([]models.Expense, error) 
 	allExpenses := []models.Expense{}
 	for rows.Next() {
 		var currentExpense models.Expense
-		err = rows.Scan(&currentExpense.ExpenseID, &currentExpense.ExpenseType, &currentExpense.Amount, &currentExpense.CreatedAt)
+		err = rows.Scan(&currentExpense.ExpenseID, &currentExpense.Amount, &currentExpense.CreatedAt,
+			&currentExpense.ExpenseType.TypeName, &currentExpense.ExpenseType.SplitType, &currentExpense.ExpenseType.CreatedAt)
 		if err != nil {
 			return nil, fmt.Errorf("DB SelectExpenses error: %w", err)
 		}

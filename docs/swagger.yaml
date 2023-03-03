@@ -9,6 +9,17 @@ definitions:
       expenseID:
         type: integer
       expenseType:
+        $ref: '#/definitions/models.ExpenseType'
+      status:
+        type: integer
+    type: object
+  models.ExpenseType:
+    properties:
+      createdAt:
+        type: string
+      splitType:
+        $ref: '#/definitions/models.SplitType'
+      typeName:
         type: string
     type: object
   models.Split:
@@ -33,6 +44,18 @@ definitions:
       myPercentage:
         type: number
     type: object
+  models.SplitType:
+    enum:
+    - FiftyFifty
+    - Default
+    - MeOnly
+    - HerOnly
+    type: string
+    x-enum-varnames:
+    - FiftyFiftySplit
+    - DefaultSplit
+    - MeOnlySplit
+    - HerOnlySplit
 host: localhost:8080
 info:
   contact: {}
@@ -40,7 +63,38 @@ info:
   title: Rent Cat
   version: "1.0"
 paths:
-  /expense/:year/:month:
+  /expense/{expense_type}/{year}/{month}:
+    get:
+      consumes:
+      - application/json
+      description: gets expenses for a certain month and year
+      parameters:
+      - description: expense type
+        in: path
+        name: expense_type
+        required: true
+        type: string
+      - description: current year
+        in: path
+        name: year
+        required: true
+        type: string
+      - description: current month
+        in: path
+        name: month
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Expense'
+      summary: gets expenses for a certain month and year
+      tags:
+      - expenses
+  /expenses/{year}/{month}:
     get:
       consumes:
       - application/json
@@ -66,23 +120,6 @@ paths:
               $ref: '#/definitions/models.Expense'
             type: array
       summary: gets expenses for a certain month and year
-      tags:
-      - expenses
-  /expenses:
-    get:
-      consumes:
-      - application/json
-      description: Get all expenses
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/models.Expense'
-            type: array
-      summary: Get all expenses
       tags:
       - expenses
   /split:

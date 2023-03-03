@@ -26,10 +26,14 @@ type Controller struct {}
 func (cont Controller) GetLatestSplit(c *gin.Context) {
 	client, err := database.MakeDb()
 	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
 	}
 
 	split, err := client.SelectLatestSplit()
 	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
@@ -51,11 +55,15 @@ func (cont Controller) GetLatestSplit(c *gin.Context) {
 func (cont Controller) PostSplit(c *gin.Context) {
 	jsonData, err := ioutil.ReadAll(c.Request.Body)
 	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
 	}
 
 	var body models.SplitSpecifier
 	err = json.Unmarshal(jsonData, &body)
 	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
 	}
 
 	var myPercentage, herPercentage float32
@@ -67,6 +75,7 @@ func (cont Controller) PostSplit(c *gin.Context) {
 		herPercentage = body.HerPercentage
 	} else {
 		// No valid data passed
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Invalid data"})
 		return
 	}
 
@@ -81,10 +90,14 @@ func (cont Controller) PostSplit(c *gin.Context) {
 
 	client, err := database.MakeDb()
 	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
 	}
 
 	_, err = client.InsertSplit(split)
 	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{

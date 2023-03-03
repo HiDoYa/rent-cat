@@ -20,17 +20,17 @@ type Split struct {
 }
 
 // SplitType represents how an expense should be split
-type SplitType int
+type SplitType string
 
 const (
 	// FiftyFiftySplit splits the expense 50/50
-	FiftyFiftySplit SplitType = iota
+	FiftyFiftySplit SplitType = "FiftyFifty"
 	// DefaultSplit uses the configured split in the database
-	DefaultSplit
-	// HerOnlySplit only makes her pay
-	HerOnlySplit
+	DefaultSplit SplitType = "Default"
 	// MeOnlySplit only makes me pay
-	MeOnlySplit
+	MeOnlySplit SplitType = "MeOnly"
+	// HerOnlySplit only makes her pay
+	HerOnlySplit SplitType = "HerOnly"
 )
 
 func (s SplitType) computeSplit(defaultSplit Split) Split {
@@ -42,13 +42,13 @@ func (s SplitType) computeSplit(defaultSplit Split) Split {
 		}
 	case DefaultSplit:
 		return defaultSplit
-	case HerOnlySplit:
-		return Split{
-			HerPercentage: 100,
-		}
 	case MeOnlySplit:
 		return Split{
 			MyPercentage: 100,
+		}
+	case HerOnlySplit:
+		return Split{
+			HerPercentage: 100,
 		}
 	}
 
