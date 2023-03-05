@@ -25,7 +25,7 @@ func (db *Client) InsertExpense(expense models.Expense) (int, error) {
 
 // SelectExpense retrieves a single expense from the specified month and year
 func (db *Client) SelectExpense(expenseType string, month int, year int) (models.Expense, error) {
-	stmt := "SELECT e.expense_id, e.amount, e.created_at, " +
+	stmt := "SELECT e.expense_id, e.amount, e.expense_status, e.created_at, " +
 		"et.type_name, et.split_type, et.created_at FROM expense AS E " +
 		"INNER JOIN expense_type AS et " +
 		"ON e.expense_type = et.type_name " +
@@ -41,7 +41,7 @@ func (db *Client) SelectExpense(expenseType string, month int, year int) (models
 	defer rows.Close()
 
 	var expense models.Expense
-	err = rows.Scan(&expense.ExpenseID, &expense.Amount, &expense.CreatedAt, 
+	err = rows.Scan(&expense.ExpenseID, &expense.Amount, &expense.Status, &expense.CreatedAt, 
 		&expense.ExpenseType.TypeName, &expense.ExpenseType.SplitType, &expense.ExpenseType.CreatedAt)
 	if err != nil {
 		return models.Expense{}, fmt.Errorf("DB SelectExpense error: %w", err)
@@ -52,7 +52,7 @@ func (db *Client) SelectExpense(expenseType string, month int, year int) (models
 
 // SelectExpenses retrieves all expenses from the specified month and year
 func (db *Client) SelectExpenses(month int, year int) ([]models.Expense, error) {
-	stmt := "SELECT e.expense_id, e.amount, e.created_at, " +
+	stmt := "SELECT e.expense_id, e.amount, e.expense_status, e.created_at, " +
 		"et.type_name, et.split_type, et.created_at FROM expense AS e " +
 		"INNER JOIN expense_type AS et " +
 		"ON e.expense_type = et.type_name " +
@@ -69,8 +69,9 @@ func (db *Client) SelectExpenses(month int, year int) ([]models.Expense, error) 
 	allExpenses := []models.Expense{}
 	for rows.Next() {
 		var currentExpense models.Expense
-		err = rows.Scan(&currentExpense.ExpenseID, &currentExpense.Amount, &currentExpense.CreatedAt,
+		err = rows.Scan(&currentExpense.ExpenseID, &currentExpense.Amount, &currentExpense.Status, &currentExpense.CreatedAt,
 			&currentExpense.ExpenseType.TypeName, &currentExpense.ExpenseType.SplitType, &currentExpense.ExpenseType.CreatedAt)
+		fmt.Printf("%+v\n", currentExpense)
 		if err != nil {
 			return nil, fmt.Errorf("DB SelectExpenses error: %w", err)
 		}

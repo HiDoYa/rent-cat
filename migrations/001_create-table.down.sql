@@ -1,3 +1,5 @@
 DROP TABLE IF EXISTS split;
 DROP TABLE IF EXISTS expense;
 DROP TABLE IF EXISTS expense_type;
+DROP TYPE IF EXISTS split_type;
+DROP TYPE IF EXISTS expense_status_type;

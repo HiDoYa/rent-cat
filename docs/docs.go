@@ -16,6 +16,45 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/expense-summary/{year}/{month}": {
+            "get": {
+                "description": "gets expense summary for a certain month and year",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "expenses"
+                ],
+                "summary": "gets expense summary for a certain month and year",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "current year",
+                        "name": "year",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "current month",
+                        "name": "month",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.ExpenseSummary"
+                        }
+                    }
+                }
+            }
+        },
         "/expense/{expense_type}/{year}/{month}": {
             "get": {
                 "description": "gets expenses for a certain month and year",
@@ -179,7 +218,34 @@ const docTemplate = `{
                     "$ref": "#/definitions/models.ExpenseType"
                 },
                 "status": {
-                    "type": "integer"
+                    "$ref": "#/definitions/models.ExpenseStatus"
+                }
+            }
+        },
+        "models.ExpenseStatus": {
+            "type": "string",
+            "enum": [
+                "Paid",
+                "Covered",
+                "Unpaid"
+            ],
+            "x-enum-varnames": [
+                "PaidStatus",
+                "CoveredStatus",
+                "UnpaidStatus"
+            ]
+        },
+        "models.ExpenseSummary": {
+            "type": "object",
+            "properties": {
+                "herAmount": {
+                    "type": "number"
+                },
+                "myAmount": {
+                    "type": "number"
+                },
+                "status": {
+                    "type": "string"
                 }
             }
         },
